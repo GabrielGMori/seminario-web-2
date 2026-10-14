@@ -1,3 +1,7 @@
-<div>
-    <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
+@extends('layouts.app')
+
+@section('content')
+<div class="container py-5">
+    <livewire:produto-form :produto="request()->route('produto')" />
 </div>
+@endsection

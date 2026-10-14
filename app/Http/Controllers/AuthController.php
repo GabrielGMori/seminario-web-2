@@ -16,9 +16,21 @@ class AuthController extends Controller
     public function registerSubmit(Request $request)
     {
         $credentials = $request->validate([
-            'name' => 'required|string',
-            'email'=> 'required|email',
-            'password'=> 'required|confirmed',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|confirmed|min:8',
+        ], [
+            'required' => 'O campo :attribute é obrigatório.',
+            'string' => 'O campo :attribute deve ser um texto.',
+            'email' => 'Informe um endereço de e-mail válido.',
+            'max' => 'O campo :attribute não pode ter mais de :max caracteres.',
+            'unique' => 'Este e-mail já está cadastrado.',
+            'confirmed' => 'A confirmação da senha não corresponde.',
+            'min' => 'A senha deve ter pelo menos :min caracteres.',
+        ], [
+            'name' => 'nome',
+            'email' => 'e-mail',
+            'password' => 'senha',
         ]);
 
         User::create($credentials);
@@ -34,8 +46,14 @@ class AuthController extends Controller
     public function loginSubmit(Request $request)
     {
         $credentials = $request->validate([
-            'email'=> 'required|email',
-            'password'=> 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+        ], [
+            'required' => 'O campo :attribute é obrigatório.',
+            'email' => 'Informe um endereço de e-mail válido.',
+        ], [
+            'email' => 'e-mail',
+            'password' => 'senha',
         ]);
 
         if (Auth::attempt($credentials)) {
@@ -43,7 +61,7 @@ class AuthController extends Controller
             return redirect()->route('produtos.index');
         }
 
-        return back()->withErrors(['credentials' => 'As credenciais inseridas estão incorretas']);
+        return back()->withErrors(['credentials' => 'O e-mail ou a senha informados estão incorretos.']);
     }
 
     public function logout(Request $request)

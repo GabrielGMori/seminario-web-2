@@ -7,6 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Produto extends Model
 {
-    /** @use HasFactory<\Database\Factories\ProdutoFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'identificador',
+        'estoque',
+        'categoria',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'estoque' => 'integer',
+        ];
+    }
 }

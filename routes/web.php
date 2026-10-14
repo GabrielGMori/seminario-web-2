@@ -1,27 +1,22 @@
 <?php
 
-use App\Http\Controllers\ProdutoController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/produtos');
 
-Route::controller(AuthController::class)->group(function () {
-    Route::middleware('guest')->group(function () {
-        Route::get('/login', 'login')->name('login');
-        Route::post('/login', 'loginSubmit')->name('loginSubmit');
-        Route::get('/register', 'register')->name('register');
-        Route::post('/login', 'loginSubmit')->name('loginSubmit');
-    });
-
-    Route::middleware('auth')->post('/logout', 'logout')->name('logout');
+Route::middleware('guest')->controller(AuthController::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'loginSubmit')->name('loginSubmit');
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register', 'registerSubmit')->name('registerSubmit');
 });
 
-Route::controller(ProdutoController::class)->middleware('auth')->prefix('/produtos')->name('produtos.')->group(function () {
-    Route::get('/', 'index')->name('.index');
-    Route::get('/novo', 'create')->name('create');
-    Route::post('/novo', 'store')->name('store');
-    Route::get('/editar', 'edit')->name('edit');
-    Route::patch('/editar', 'update')->name('update');
-    Route::delete('/remover', 'destroy')->name('destroy');
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/produtos', fn () => view('produtos.index'))->name('produtos.index');
+    Route::get('/produtos/novo', fn () => view('produtos.form'))->name('produtos.create');
+    Route::get('/produtos/{produto}/editar', fn (int $produto) => view('produtos.form'))
+        ->name('produtos.edit');
 });
