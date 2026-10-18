@@ -10,9 +10,27 @@ class ProdutoIndex extends Component
 {
     use WithPagination;
 
-    public string $busca = '';
+    public string $filtroNome = '';
+    public string $filtroIdentificador = '';
+    public string $filtroEstoque = '';
+    public string $filtroCategoria = '';
 
-    public function updatedBusca(): void
+    public function updatedFiltroNome(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFiltroIdentificador(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFiltroEstoque(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFiltroCategoria(): void
     {
         $this->resetPage();
     }
@@ -29,11 +47,10 @@ class ProdutoIndex extends Component
     public function render()
     {
         $produtos = Produto::query()
-            ->where(function ($query) {
-                $query->where('name', 'like', '%' . $this->busca . '%')
-                    ->orWhere('identificador', 'like', '%' . $this->busca . '%')
-                    ->orWhere('categoria', 'like', '%' . $this->busca . '%');
-            })
+            ->when($this->filtroNome !== '', fn ($query) => $query->where('name', 'like', '%' . $this->filtroNome . '%'))
+            ->when($this->filtroIdentificador !== '', fn ($query) => $query->where('identificador', 'like', '%' . $this->filtroIdentificador . '%'))
+            ->when($this->filtroEstoque !== '', fn ($query) => $query->where('estoque', $this->filtroEstoque))
+            ->when($this->filtroCategoria !== '', fn ($query) => $query->where('categoria', 'like', '%' . $this->filtroCategoria . '%'))
             ->orderBy('name')
             ->paginate(10);
 

@@ -11,21 +11,34 @@
         <div class="alert alert-success" role="status">{{ session('status') }}</div>
     @endif
 
-    <div class="mb-3">
-        <label for="busca" class="form-label">Buscar produtos</label>
-        <input id="busca" type="search" class="form-control"
-            placeholder="Nome, identificador ou categoria..."
-            wire:model.live.debounce.300ms="busca">
-    </div>
-
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead class="table-light">
                 <tr>
-                    <th>Nome</th>
-                    <th>Identificador</th>
-                    <th>Estoque</th>
-                    <th>Categoria</th>
+                    <th>
+                        <label for="filtroNome" class="form-label">Nome</label>
+                        <input id="filtroNome" type="search" class="form-control form-control-sm"
+                            placeholder="Filtrar nome..."
+                            wire:model.live.debounce.300ms="filtroNome">
+                    </th>
+                    <th>
+                        <label for="filtroIdentificador" class="form-label">Identificador</label>
+                        <input id="filtroIdentificador" type="search" class="form-control form-control-sm"
+                            placeholder="Filtrar identificador..."
+                            wire:model.live.debounce.300ms="filtroIdentificador">
+                    </th>
+                    <th>
+                        <label for="filtroEstoque" class="form-label">Estoque</label>
+                        <input id="filtroEstoque" type="number" min="0" step="1" class="form-control form-control-sm"
+                            placeholder="Quantidade"
+                            wire:model.live.debounce.300ms="filtroEstoque">
+                    </th>
+                    <th>
+                        <label for="filtroCategoria" class="form-label">Categoria</label>
+                        <input id="filtroCategoria" type="search" class="form-control form-control-sm"
+                            placeholder="Filtrar categoria..."
+                            wire:model.live.debounce.300ms="filtroCategoria">
+                    </th>
                     <th class="text-end">Ações</th>
                 </tr>
             </thead>
