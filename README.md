@@ -47,3 +47,26 @@ Abra o endereço indicado pelo `artisan serve`, crie uma conta e entre para aces
 - `wire:confirm`: solicita confirmação antes de excluir.
 
 O Livewire já está listado nas dependências do Composer; `composer install` instala a versão registrada no `composer.lock`.
+
+
+## Módulos de gestão
+
+O sistema também possui telas de **Vendas**, **Compras**, **Categorias** e **Relatórios**, acessíveis pelo menu principal após o login.
+
+- Vendas registram a saída de produtos e impedem quantidades superiores ao estoque disponível.
+- Compras registram a entrada de produtos e atualizam o estoque.
+- Categorias possuem cadastro, edição e exclusão. Uma categoria vinculada a produtos não pode ser excluída.
+- Relatórios apresentam totais do período selecionado, movimentações recentes e produtos com estoque baixo.
+- As listagens utilizam paginação, busca e seleção da quantidade de registros por página.
+
+### Atualização do banco de dados
+
+Depois de atualizar os arquivos, execute na pasta do projeto:
+
+```bash
+php artisan migrate
+```
+
+A migração cria as categorias e as tabelas de vendas e compras. Os nomes de categorias que já estavam gravados nos produtos são migrados para a nova tabela e associados aos respectivos produtos.
+
+Para cadastrar um produto, cadastre primeiro ao menos uma categoria em **Categorias**.

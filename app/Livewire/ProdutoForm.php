@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Categoria;
 use App\Models\Produto;
 use Livewire\Component;
 
@@ -11,18 +12,17 @@ class ProdutoForm extends Component
     public string $name = '';
     public string $identificador = '';
     public string $estoque = '';
-    public string $categoria = '';
+    public string $categoria_id = '';
 
     public function mount(?int $produto = null): void
     {
         if ($produto !== null) {
             $registro = Produto::findOrFail($produto);
-
             $this->produtoId = $registro->id;
             $this->name = $registro->name;
             $this->identificador = $registro->identificador;
             $this->estoque = (string) $registro->estoque;
-            $this->categoria = $registro->categoria;
+            $this->categoria_id = (string) ($registro->categoria_id ?? '');
         }
     }
 
@@ -32,7 +32,7 @@ class ProdutoForm extends Component
             'name' => ['required', 'string', 'max:255'],
             'identificador' => ['required', 'string', 'max:255'],
             'estoque' => ['required', 'integer', 'min:0'],
-            'categoria' => ['required', 'string', 'max:255'],
+            'categoria_id' => ['required', 'exists:categorias,id'],
         ], [
             'required' => 'O campo :attribute é obrigatório.',
             'string' => 'O campo :attribute deve ser um texto.',
@@ -43,8 +43,10 @@ class ProdutoForm extends Component
             'name' => 'nome do produto',
             'identificador' => 'identificador',
             'estoque' => 'quantidade em estoque',
-            'categoria' => 'categoria',
+            'categoria_id' => 'categoria',
         ]);
+
+        $dados['categoria'] = Categoria::findOrFail($dados['categoria_id'])->nome;
 
         if ($this->produtoId) {
             Produto::findOrFail($this->produtoId)->update($dados);
@@ -61,6 +63,7 @@ class ProdutoForm extends Component
     {
         return view('livewire.produto-form', [
             'editando' => $this->produtoId !== null,
+            'categorias' => Categoria::orderBy('nome')->get(),
         ]);
     }
 }
