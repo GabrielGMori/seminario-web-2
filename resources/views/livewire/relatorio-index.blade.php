@@ -2,7 +2,6 @@
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
             <h1 class="h2 mb-1">@lang('ui.report_title')</h1>
-            <p class="text-muted mb-0">@lang('ui.report_intro')</p>
         </div>
 
         <div class="d-flex align-items-center gap-2">

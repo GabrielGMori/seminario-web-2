@@ -3,9 +3,6 @@
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
             <div>
                 <h1 class="h2 mb-1">{{ $titulo }}</h1>
-                <p class="text-muted mb-0">
-                    {{ $mostrarLixeira ? __('ui.deleted_movements') : __('ui.movement_summary', ['type' => strtolower($titulo)]) }}
-                </p>
             </div>
             <div class="d-flex gap-2">
                 <button type="button" class="btn btn-outline-secondary" wire:click="alternarLixeira">

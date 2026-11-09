@@ -17,7 +17,7 @@ Sistema de gestão de estoque desenvolvido com Laravel 12, PHP 8.2+ e Livewire 4
 
 - Laravel 12 e Eloquent ORM.
 - Livewire para interfaces de listagem, formulários, filtros e interações sem recarregamento completo.
-- Blade para layouts e composição modular das páginas.
+- Blade para layouts e composição modular das páginas juntamente com Bootstrap.
 - Form Requests para regras reutilizáveis de validação HTTP e para validação de estado dos componentes Livewire.
 - Migrations para usuários, categorias, produtos, vendas, compras e tabelas de associação com quantidades.
 - SQLite por padrão, configurável pelo `.env`.
