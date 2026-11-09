@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container py-5">
-        <livewire:produto-form :produto="request()->route('produto')" />
+        <livewire:produto-form :produto="$produto ?? null" />
     </div>
 @endsection
