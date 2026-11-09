@@ -3,35 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Compra extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'compras';
 
     protected $fillable = [
-        'produto_id',
-        'quantidade',
-        'valor_unitario',
-        'valor_total',
-        'data_movimentacao',
-        'observacao',
+        'data',
+        'preco',
         'user_id',
     ];
 
     protected function casts(): array
     {
         return [
-            'quantidade' => 'integer',
-            'valor_unitario' => 'decimal:2',
-            'valor_total' => 'decimal:2',
-            'data_movimentacao' => 'date',
+            'data' => 'date',
         ];
     }
 
-    public function produto(): BelongsTo
+    public function produtos(): BelongsToMany
     {
-        return $this->belongsTo(Produto::class)->withTrashed();
+        return $this->belongsToMany(Produto::class, 'compra_produto')->withPivot('quantidade');
     }
 
     public function usuario(): BelongsTo

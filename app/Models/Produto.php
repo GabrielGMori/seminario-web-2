@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Produto extends Model
@@ -14,8 +14,9 @@ class Produto extends Model
 
     protected $fillable = [
         'name',
-        'identificador',
         'estoque',
+        'preco_compra',
+        'preco_venda',
         'categoria',
         'categoria_id',
     ];
@@ -24,21 +25,23 @@ class Produto extends Model
     {
         return [
             'estoque' => 'integer',
+            'preco_compra' => 'decimal:2',
+            'preco_venda' => 'decimal:2',
         ];
     }
 
-    public function categoriaRelacionada(): BelongsTo
+    public function categoria(): BelongsTo
     {
-        return $this->belongsTo(Categoria::class, 'categoria_id');
+        return $this->belongsTo(Categoria::class, 'categoria_id')->withTrashed();
     }
 
-    public function vendas(): HasMany
+    public function vendas(): BelongsToMany
     {
-        return $this->hasMany(Venda::class);
+        return $this->belongsToMany(Venda::class, 'venda_produto')->withPivot('quantidade');
     }
 
-    public function compras(): HasMany
+    public function compras(): BelongsToMany
     {
-        return $this->hasMany(Compra::class);
+        return $this->belongsToMany(Compra::class, 'compra_produto')->withPivot('quantidade');
     }
 }

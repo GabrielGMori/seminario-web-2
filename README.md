@@ -1,72 +1,71 @@
-# LiveShop — demonstração de Laravel Livewire
+# LiveShop
 
-Projeto didático de cadastro e gerenciamento de produtos com Laravel 12 e Livewire 4.
+Sistema de gestão de estoque desenvolvido com Laravel 12, PHP 8.2+ e Livewire 4. O projeto demonstra componentes reativos do Livewire junto a operações de produtos, categorias, vendas, compras e relatórios.
 
-## Onde o Livewire foi aplicado
+Repositório: https://github.com/GabrielGMori/seminario-web-2
 
-- `app/Livewire/ProdutoIndex.php`: lista, pesquisa, paginação e exclusão de produtos.
-- `resources/views/livewire/produto-index.blade.php`: tabela e busca reativa com `wire:model.live`.
-- `app/Livewire/ProdutoForm.php`: validação e gravação de produtos novos ou editados.
-- `resources/views/livewire/produto-form.blade.php`: formulário com `wire:model` e `wire:submit`.
-- `resources/views/layouts/app.blade.php`: inclui `@livewireStyles` e `@livewireScripts`.
-- `routes/web.php`: rotas protegidas por autenticação que exibem as páginas com os componentes Livewire.
+## Funcionalidades
 
-## Como executar
+- Cadastro, edição, listagem, busca, filtros por categoria, estoque e faixa de preços, paginação e lixeira de produtos.
+- Cadastro e edição de categorias, com proteção contra exclusão enquanto houver produtos associados.
+- Registro de vendas e compras em telas separadas, com seleção de vários produtos, quantidades, total atualizado e ajuste de estoque.
+- Validação de estoque disponível antes de registrar vendas.
+- Remoção lógica, restauração e exclusão permanente de produtos, categorias, vendas e compras, respeitando os vínculos existentes.
+- Relatórios de vendas e compras por período, movimentações recentes e produtos com estoque baixo.
+- Interface em português, inglês e espanhol.
+- Autenticação para as telas de gestão.
 
-Requisitos: PHP compatível com o Laravel do projeto, Composer, Node.js/npm e banco de dados configurado.
+## Tecnologias e arquitetura
 
-1. Instale as dependências:
-   ```bash
+- Laravel 12 e Eloquent ORM.
+- Livewire 4 para interfaces de listagem, formulários, filtros e interações sem recarregamento completo.
+- Blade para layouts e composição modular das páginas.
+- Form Requests para regras reutilizáveis de validação HTTP e para validação de estado dos componentes Livewire.
+- Migrations para usuários, categorias, produtos, vendas, compras e tabelas de associação com quantidades.
+- Seeders para dados de demonstração.
+- SQLite por padrão, configurável pelo `.env`.
+
+Os principais componentes ficam em `app/Livewire`; os modelos e relacionamentos em `app/Models`; as regras de validação em `app/Http/Requests`; as páginas e componentes Blade em `resources/views`; e as migrations e seeders em `database/`.
+
+## Requisitos
+
+- PHP 8.2 ou superior e extensões exigidas pelo Laravel.
+- Composer.
+- Node.js e npm.
+- SQLite (configuração padrão) ou outro banco compatível configurado no `.env`.
+
+## Instalação e execução
+
+1. Clone o repositório e instale as dependências:
+
+   ```sh
+   git clone https://github.com/GabrielGMori/seminario-web-2.git
+   cd seminario-web-2
    composer install
    npm install
    ```
-2. Crie o arquivo `.env` a partir do `.env.example` e configure o banco de dados.
-3. Gere a chave da aplicação e execute as migrations:
-   ```bash
+
+2. Crie o `.env` com base no exemplo e gere a chave da aplicação:
+
+   ```sh
+   # Windows PowerShell
+   Copy-Item .env.example .env
    php artisan key:generate
-   php artisan migrate
    ```
-4. Em um terminal, inicie o Laravel:
-   ```bash
+
+   No macOS/Linux, use `cp .env.example .env`. O `.env.example` usa SQLite; crie `database/database.sqlite` se ele ainda não existir, ou configure outro banco no `.env`.
+
+3. Crie as tabelas e os dados iniciais:
+
+   ```sh
+   php artisan migrate --seed
+   ```
+
+4. Compile os recursos e inicie o servidor:
+
+   ```sh
+   npm run build
    php artisan serve
    ```
-5. Em outro terminal, compile os recursos:
-   ```bash
-   npm run dev
-   ```
 
-Abra o endereço indicado pelo `artisan serve`, crie uma conta e entre para acessar o gerenciamento de produtos.
-
-## Diretivas Livewire demonstradas
-
-- `wire:model.live.debounce.300ms="busca"`: atualiza a pesquisa enquanto o usuário digita, com pequeno atraso.
-- `wire:model="name"`: mantém o campo ligado à propriedade PHP.
-- `wire:submit="salvar"`: chama o método PHP ao enviar o formulário.
-- `wire:click="excluir(...)"`: chama o método de exclusão.
-- `wire:loading`: mostra o estado de processamento durante a requisição.
-- `wire:confirm`: solicita confirmação antes de excluir.
-
-O Livewire já está listado nas dependências do Composer; `composer install` instala a versão registrada no `composer.lock`.
-
-
-## Módulos de gestão
-
-O sistema também possui telas de **Vendas**, **Compras**, **Categorias** e **Relatórios**, acessíveis pelo menu principal após o login.
-
-- Vendas registram a saída de produtos e impedem quantidades superiores ao estoque disponível.
-- Compras registram a entrada de produtos e atualizam o estoque.
-- Categorias possuem cadastro, edição e exclusão. Uma categoria vinculada a produtos não pode ser excluída.
-- Relatórios apresentam totais do período selecionado, movimentações recentes e produtos com estoque baixo.
-- As listagens utilizam paginação, busca e seleção da quantidade de registros por página.
-
-### Atualização do banco de dados
-
-Depois de atualizar os arquivos, execute na pasta do projeto:
-
-```bash
-php artisan migrate
-```
-
-A migração cria as categorias e as tabelas de vendas e compras. Os nomes de categorias que já estavam gravados nos produtos são migrados para a nova tabela e associados aos respectivos produtos.
-
-Para cadastrar um produto, cadastre primeiro ao menos uma categoria em **Categorias**.
+5. Acesse o endereço informado pelo Artisan, registre um usuário e entre no sistema.

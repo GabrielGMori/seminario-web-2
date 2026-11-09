@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,29 +15,11 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function registerSubmit(Request $request)
+    public function registerSubmit(RegisterRequest $request)
     {
-        $credentials = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|confirmed|min:8',
-        ], [
-            'required' => 'O campo :attribute é obrigatório.',
-            'string' => 'O campo :attribute deve ser um texto.',
-            'email' => 'Informe um endereço de e-mail válido.',
-            'max' => 'O campo :attribute não pode ter mais de :max caracteres.',
-            'unique' => 'Este e-mail já está cadastrado.',
-            'confirmed' => 'A confirmação da senha não corresponde.',
-            'min' => 'A senha deve ter pelo menos :min caracteres.',
-        ], [
-            'name' => 'nome',
-            'email' => 'e-mail',
-            'password' => 'senha',
-        ]);
+        User::create($request->validated());
 
-        User::create($credentials);
-
-        return redirect('login')->with('status', 'Usuário cadastrado com sucesso!');
+        return redirect('login')->with('status', __('ui.user_registered'));
     }
 
     public function login()
@@ -43,25 +27,16 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function loginSubmit(Request $request)
+    public function loginSubmit(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ], [
-            'required' => 'O campo :attribute é obrigatório.',
-            'email' => 'Informe um endereço de e-mail válido.',
-        ], [
-            'email' => 'e-mail',
-            'password' => 'senha',
-        ]);
+        $credentials = $request->validated();
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->route('produtos.index');
         }
 
-        return back()->withErrors(['credentials' => 'O e-mail ou a senha informados estão incorretos.']);
+        return back()->withErrors(['credentials' => __('ui.invalid_credentials')]);
     }
 
     public function logout(Request $request)

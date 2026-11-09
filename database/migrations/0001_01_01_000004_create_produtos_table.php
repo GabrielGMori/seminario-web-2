@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name'); 
-            $table->string('identificador');
+            $table->string('name');
             $table->integer('estoque');
-            $table->string('categoria');
+            $table->decimal('preco_compra', 10, 2)->default(0);
+            $table->decimal('preco_venda', 10, 2)->default(0);
+            $table->foreignId('categoria_id')->constrained('categorias')->restrictOnDelete();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
