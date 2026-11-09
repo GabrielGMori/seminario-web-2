@@ -2,8 +2,6 @@
 
 Sistema de gestão de estoque desenvolvido com Laravel 12, PHP 8.2+ e Livewire 4. O projeto demonstra componentes reativos do Livewire junto a operações de produtos, categorias, vendas, compras e relatórios.
 
-Repositório: https://github.com/GabrielGMori/seminario-web-2
-
 ## Funcionalidades
 
 - Cadastro, edição, listagem, busca, filtros por categoria, estoque e faixa de preços, paginação e lixeira de produtos.
@@ -18,11 +16,10 @@ Repositório: https://github.com/GabrielGMori/seminario-web-2
 ## Tecnologias e arquitetura
 
 - Laravel 12 e Eloquent ORM.
-- Livewire 4 para interfaces de listagem, formulários, filtros e interações sem recarregamento completo.
+- Livewire para interfaces de listagem, formulários, filtros e interações sem recarregamento completo.
 - Blade para layouts e composição modular das páginas.
 - Form Requests para regras reutilizáveis de validação HTTP e para validação de estado dos componentes Livewire.
 - Migrations para usuários, categorias, produtos, vendas, compras e tabelas de associação com quantidades.
-- Seeders para dados de demonstração.
 - SQLite por padrão, configurável pelo `.env`.
 
 Os principais componentes ficam em `app/Livewire`; os modelos e relacionamentos em `app/Models`; as regras de validação em `app/Http/Requests`; as páginas e componentes Blade em `resources/views`; e as migrations e seeders em `database/`.
@@ -52,8 +49,6 @@ Os principais componentes ficam em `app/Livewire`; os modelos e relacionamentos 
    Copy-Item .env.example .env
    php artisan key:generate
    ```
-
-   No macOS/Linux, use `cp .env.example .env`. O `.env.example` usa SQLite; crie `database/database.sqlite` se ele ainda não existir, ou configure outro banco no `.env`.
 
 3. Crie as tabelas e os dados iniciais:
 
